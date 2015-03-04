@@ -1,8 +1,12 @@
 package com.carpentersblocks;
 
 import com.carpentersblocks.proxy.CommonProxy;
+import com.carpentersblocks.util.CarpentersBlocksCreativeTab;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -34,6 +38,8 @@ public class CarpentersBlocks {
     @SidedProxy(serverSide = "com.carpentersblocks.proxy.CommonProxy", clientSide = "com.carpentersblocks.proxy.ClientProxy")
     public static CommonProxy PROXY;
 
+    public static final CreativeTabs CREATIVE_TAB = new CarpentersBlocksCreativeTab(MOD_ID);
+
     /**
      * Handles the {@link net.minecraftforge.fml.common.event.FMLPreInitializationEvent}
      *
@@ -41,6 +47,19 @@ public class CarpentersBlocks {
      */
     @Mod.EventHandler
     public void handlePreInitialization(FMLPreInitializationEvent event) {
-        PROXY.handlePreInitialization(event);
+        Configuration configuration = new Configuration(event.getSuggestedConfigurationFile());
+        configuration.load();
+
+        PROXY.handlePreInitialization(event, configuration);
+
+        if (configuration.hasChanged()) {
+            configuration.save();
+        }
+    }
+
+
+    @Mod.EventHandler
+    public void handleInitialization(FMLInitializationEvent event) {
+        PROXY.handleInitialization(event);
     }
 }
