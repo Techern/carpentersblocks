@@ -4,35 +4,33 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
 import com.carpentersblocks.proxy.CommonProxy;
 import com.carpentersblocks.util.CarpentersBlocksTab;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(
         modid = CarpentersBlocks.MODID,
         name = "Carpenter's Blocks",
         version = CarpentersBlocks.VERSION,
-        dependencies = "required-after:Forge@[10.13.0.1180,)"
+        dependencies = "required-after:Forge@[11.14.1.1334,)"
         )
 public class CarpentersBlocks {
 
     public static final String MODID = "CarpentersBlocks";
-    public static final String VERSION = "3.3.5";
+    public static final String VERSION = "4.0.0-dev";
     public static FMLEventChannel channel;
     public static CreativeTabs creativeTab = new CarpentersBlocksTab(MODID);
 
-    @Instance(MODID)
+    @Mod.Instance(MODID)
     public static CarpentersBlocks instance;
 
     @SidedProxy(clientSide = "com.carpentersblocks.proxy.ClientProxy", serverSide = "com.carpentersblocks.proxy.CommonProxy")
     public static CommonProxy proxy;
 
-    @EventHandler
+    @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(MODID);
@@ -46,7 +44,7 @@ public class CarpentersBlocks {
         }
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
         proxy.init(event);
