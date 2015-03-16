@@ -23,6 +23,7 @@ archivesBaseName = "Carpenter's Blocks"
 
 minecraft {
     version = "1.8-11.14.1.1334"
+    mappings = "stable_16"
 }
 
 dependencies {
