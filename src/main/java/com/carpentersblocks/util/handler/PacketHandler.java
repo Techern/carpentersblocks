@@ -8,15 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import com.carpentersblocks.CarpentersBlocks;
 import com.carpentersblocks.network.ICarpentersPacket;
 import com.carpentersblocks.network.PacketActivateBlock;
 import com.carpentersblocks.network.PacketEnrichPlant;
 import com.carpentersblocks.network.PacketSlopeSelect;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.FMLNetworkEvent.ServerCustomPacketEvent;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 public class PacketHandler {
 
@@ -29,7 +30,7 @@ public class PacketHandler {
     }
 
     @SubscribeEvent
-    public void onServerPacket(ServerCustomPacketEvent event) throws IOException
+    public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent event) throws IOException
     {
         ByteBufInputStream bbis = new ByteBufInputStream(event.packet.payload());
         EntityPlayer entityPlayer = ((NetHandlerPlayServer) event.handler).playerEntity;
@@ -54,7 +55,7 @@ public class PacketHandler {
             packet.appendData(buffer);
         } catch (IOException e) { }
 
-        CarpentersBlocks.channel.sendToServer(new FMLProxyPacket(new C17PacketCustomPayload(CarpentersBlocks.MODID, buffer)));
+        CarpentersBlocks.channel.sendToServer(new FMLProxyPacket(new C17PacketCustomPayload(CarpentersBlocks.MODID, new PacketBuffer(buffer))));
     }
 
 }

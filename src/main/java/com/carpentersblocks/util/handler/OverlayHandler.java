@@ -4,15 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGrass;
-import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.block.model.ModelBlock;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import com.carpentersblocks.util.BlockProperties;
 import com.carpentersblocks.util.registry.FeatureRegistry;
 import com.carpentersblocks.util.registry.IconRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class OverlayHandler {
 
@@ -107,7 +108,7 @@ public class OverlayHandler {
      *
      * Returns null if there is no icon to return.
      */
-    public static IIcon getOverlayIcon(Overlay overlay, int side)
+    public static TextureAtlasSprite getOverlayIcon(Overlay overlay, int side)
     {
         Block block = BlockProperties.toBlock(overlay.getItemStack());
 
@@ -120,11 +121,11 @@ public class OverlayHandler {
                     case 0:
                         return null;
                     case 1:
-                        return block.getBlockTextureFromSide(1);
+                        return null; //TODO Check TODO below for details -CB
                     default:
                         switch (overlay) {
                             case GRASS:
-                                return RenderBlocks.fancyGrass ? BlockGrass.getIconSideOverlay() : IconRegistry.icon_overlay_fast_grass_side;
+                                return /*RenderBlocks.fancyGrass ? BlockGrass.getIconSideOverlay() : */IconRegistry.icon_overlay_fast_grass_side; //TODO Get a replacement! -CB
                             case SNOW:
                                 return IconRegistry.icon_overlay_snow_side;
                             case HAY:
@@ -137,7 +138,7 @@ public class OverlayHandler {
                 }
             case WEB:
             case VINE:
-                return block.getBlockTextureFromSide(side);
+                return null; //TODO Will Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(block.getUnlocalizedName()); work? Test it - CB
             default: {
                 return null;
             }

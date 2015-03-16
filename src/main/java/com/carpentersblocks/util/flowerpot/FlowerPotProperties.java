@@ -9,8 +9,8 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import com.carpentersblocks.tileentity.TEBase;
 import com.carpentersblocks.util.BlockProperties;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FlowerPotProperties {
 
@@ -39,7 +39,7 @@ public class FlowerPotProperties {
 
         TE.setMetadata(itemStack.getItemDamage());
         int color1 = block.getBlockColor();
-        int color2 = block.colorMultiplier(TE.getWorldObj(), TE.xCoord, TE.yCoord, TE.zCoord);
+        int color2 = block.colorMultiplier(TE.getWorld(), TE.getPos());
         TE.restoreMetadata();
 
         return color1 < color2 ? color1 : color2;
@@ -61,7 +61,7 @@ public class FlowerPotProperties {
     {
         if (itemStack.getItem() instanceof ItemBlock) {
             Block block = BlockProperties.toBlock(itemStack);
-            if (!block.hasTileEntity(itemStack.getItemDamage())) {
+            if (!block.hasTileEntity(block.getBlockState().getBaseState())) {
                 Material material = block.getMaterial();
                 return material.equals(Material.grass) || material.equals(Material.ground) || material.equals(Material.sand);
             }
@@ -78,7 +78,7 @@ public class FlowerPotProperties {
         Block block = BlockProperties.toBlock(itemStack);
 
         if (!block.equals(Blocks.air)) {
-            if (!block.hasTileEntity(itemStack.getItemDamage())) {
+            if (!block.hasTileEntity(block.getBlockState().getBaseState())) {
                 return block instanceof IPlantable || block instanceof IShearable;
             } else {
                 return false;
